@@ -1,6 +1,6 @@
 <template>
     <div class="full-width center-content">
-        <Scene name="World" />
+        <Scene/>
     </div>
 </template>
 <script>
