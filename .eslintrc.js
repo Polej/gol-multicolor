@@ -3,8 +3,8 @@ module.exports = {
         parser: 'babel-eslint'
     },
     extends: [
-        'plugin:vue/recommended',
-        'standard'
+        'airbnb-base',
+        'plugin:vue/essential',
     ],
     plugins: [
         'vue'
@@ -20,5 +20,4 @@ module.exports = {
     rules: {
         'indent': ['error', 4],
     },
-
 }

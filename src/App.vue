@@ -4,11 +4,11 @@
     </div>
 </template>
 <script>
-import HelloComponent from './components/HelloComponent.vue'
+import HelloComponent from './components/HelloComponent.vue';
 
 export default {
     components: {
-        HelloComponent
-    }
-}
+        HelloComponent,
+    },
+};
 </script>
