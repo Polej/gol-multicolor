@@ -1,14 +1,14 @@
 <template>
     <div class="full-width center-content">
-        <hello-component name="World" />
+        <Scene name="World" />
     </div>
 </template>
 <script>
-import HelloComponent from './components/HelloComponent.vue';
+import Scene from './components/Scene.vue';
 
 export default {
     components: {
-        HelloComponent,
+        Scene,
     },
 };
 </script>
