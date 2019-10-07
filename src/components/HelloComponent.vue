@@ -1,14 +1,17 @@
 <template>
-  <h1>Hello {{ name }}!</h1>
+    <div>
+        <h1>Hello {{ name }}!</h1>
+        Heya & uhaha
+    </div>
 </template>
 <script>
 export default {
-  props: {
-    name: {
-      type: String,
-      required: true
+    props: {
+        name: {
+            type: String,
+            required: true
+        }
     }
-  }
 }
 </script>
 <style lang="stylus" scoped>
