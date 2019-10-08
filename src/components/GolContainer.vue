@@ -34,10 +34,8 @@ tr
 //         () => [],
 //     )
 //         .map(
-//         /* eslint-disable-next-line no-unused-vars */
-//             (list, i) => Array.from(new Array(width), () => [])
-//             /* eslint-disable-next-line no-unused-vars */
-//                 .map((point, j) => 0),
+//             () => Array.from(new Array(width), () => [])
+//                 .map(() => 0),
 //         );
 // }
 
@@ -50,10 +48,8 @@ function randomPixels(width, height) {
         () => [],
     )
         .map(
-        /* eslint-disable-next-line no-unused-vars */
-            (list, i) => Array.from(new Array(width), () => [])
-            /* eslint-disable-next-line no-unused-vars */
-                .map((point, j) => Math.round(Math.random())),
+            () => Array.from(new Array(width), () => [])
+                .map(() => Math.round(Math.random())),
         );
 }
 
@@ -63,27 +59,28 @@ function randomPixels(width, height) {
 function turnOnOrOff(i, j, oldPixels, height, width) {
     let sum = 0;
 
-    let noLeft = false;
-    let noRight = false;
-    let noTop = false;
-    let noBottom = false;
+    // vector way
 
-    if (i === 0) noTop = true;
-    if (i === height - 1) noBottom = true;
+    const arr = [];
 
-    if (j === 0) noLeft = true;
-    if (i === width - 1) noRight = true;
+    // generating the array of vectors in closest vicinity of (0,0)
+    // (not including (0,0))
+    for (let k = -1; k < 2; k += 1) {
+        for (let l = -1; l < 2; l += 1) {
+            if (!(k === 0 && l === 0)) {
+                arr.push({ k, l });
+            }
+        }
+    }
 
-    if (!noTop && !noLeft) sum += oldPixels[i - 1][j - 1];
-    if (!noLeft) sum += oldPixels[i][j - 1];
-    if (!noBottom && !noLeft) sum += oldPixels[i + 1][j - 1];
+    sum = arr.map(({ k, l }) => {
+        if ((i + k >= 0) && (i + k < height)
+        && (j + l >= 0) && (j + l < width)) {
+            return oldPixels[i + k][j + l];
+        }
 
-    if (!noTop) sum += oldPixels[i - 1][j];
-    if (!noBottom) sum += oldPixels[i + 1][j];
-
-    if (!noTop && !noRight) sum += oldPixels[i - 1][j + 1];
-    if (!noRight) sum += oldPixels[i][j + 1];
-    if (!noBottom && !noRight) sum += oldPixels[i + 1][j + 1];
+        return 0;
+    }).reduce((a, b) => a + b);
 
     if (sum === 3) return 1;
     if (sum === 2 && oldPixels[i][j] === 1) return 1;
