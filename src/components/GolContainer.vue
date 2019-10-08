@@ -26,31 +26,20 @@ tr
 <script>
 
 /**
- * Generate arrays with empty content.
+ * Generate empty array of a given length.
  */
-// function emptyPixels(width, height) {
-//     return Array.from(
-//         new Array(height),
-//         () => [],
-//     )
-//         .map(
-//             () => Array.from(new Array(width), () => [])
-//                 .map(() => 0),
-//         );
-// }
+function emptyArray(len) {
+    return Array.from(new Array(len), () => []);
+}
 
 /**
  * Generate arrays with random content.
  */
 function randomPixels(width, height) {
-    return Array.from(
-        new Array(height),
-        () => [],
-    )
-        .map(
-            () => Array.from(new Array(width), () => [])
-                .map(() => Math.round(Math.random())),
-        );
+    return emptyArray(height).map(
+        () => emptyArray(width)
+            .map(() => Math.round(Math.random())),
+    );
 }
 
 /**
@@ -107,7 +96,6 @@ function evolve(pixels) {
 }
 
 export default {
-
     data() {
         return {
             pixels: randomPixels(100, 100),
