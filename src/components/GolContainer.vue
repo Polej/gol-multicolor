@@ -25,7 +25,26 @@ tr
 
 <script>
 
-function emptyPixels(width, height) {
+/**
+ * Generate arrays with empty content.
+ */
+// function emptyPixels(width, height) {
+//     return Array.from(
+//         new Array(height),
+//         () => [],
+//     )
+//         .map(
+//         /* eslint-disable-next-line no-unused-vars */
+//             (list, i) => Array.from(new Array(width), () => [])
+//             /* eslint-disable-next-line no-unused-vars */
+//                 .map((point, j) => 0),
+//         );
+// }
+
+/**
+ * Generate arrays with random content.
+ */
+function randomPixels(width, height) {
     return Array.from(
         new Array(height),
         () => [],
@@ -38,6 +57,9 @@ function emptyPixels(width, height) {
         );
 }
 
+/**
+ * Basic logic function saying if pixel should be turned on or off.
+ */
 function turnOnOrOff(i, j, oldPixels, height, width) {
     let sum = 0;
 
@@ -68,6 +90,10 @@ function turnOnOrOff(i, j, oldPixels, height, width) {
     return 0;
 }
 
+/**
+ * Function to apply turnOnOrOff on every pixel, to transform old pixels
+ * into newer version, in one time step.
+ */
 function evolve(pixels) {
     const oldPixels = pixels;
 
@@ -87,7 +113,7 @@ export default {
 
     data() {
         return {
-            pixels: emptyPixels(100, 100),
+            pixels: randomPixels(100, 100),
         };
     },
 
@@ -97,7 +123,7 @@ export default {
 
     methods: {
         pixelStyle(bit) {
-            return `background-color: rgb(${255 - 255 * bit},${255 - 255 * bit},${255 - 255 * bit})`;
+            return `background-color: rgb(${255 * (1 - bit)},${255 * (1 - bit)},${255 * (1 - bit)})`;
         },
 
         stepForward() {
