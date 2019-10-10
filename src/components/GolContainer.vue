@@ -1,7 +1,7 @@
 <template>
     <div>
         GolContainer
-        <table cellspacing="1" cellpadding="0">
+        <table cellspacing="0" cellpadding="0">
             <tr v-for="(row, i) in pixels" :key="i">
                 <td v-for="(pixel, j) in row"
                     :key="j" :style="pixelStyleTricolor(pixel)"
@@ -49,7 +49,7 @@ export default {
         },
 
         addCell(i, j) {
-            this.pixels[i][j] = 1;
+            this.pixels[i][j] = [1, 1, 1];
         },
     },
 };

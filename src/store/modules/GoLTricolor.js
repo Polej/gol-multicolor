@@ -11,7 +11,7 @@ function makeArray(len, gen) {
 /**
  * Generate arrays with random content.
  */
-function randomPixels(width, height) {
+function randomPixelsTricolor(width, height) {
     return makeArray(height, () => (
         makeArray(width, () => [
             Math.round(Math.random()),
@@ -22,7 +22,7 @@ function randomPixels(width, height) {
 }
 
 function makeValidatorForRange(a, b) {
-    return (n) => (n >= a && n <= b);
+    return (n) => (a <= n && n <= b);
 }
 
 /**
@@ -43,7 +43,7 @@ function classicGoLTricolorRule(aliveNeighbours, oldPixels, i, j, colorIdx) {
  * Basic logic function saying if pixel should be turned on or off.
  */
 function turnOnOrOffTricolor(i, j, oldPixels, height, width) {
-    let aliveNeighboursByColors = [0, 0, 0];
+    let aliveNeighboursByColor = [0, 0, 0];
 
     const validXCoordinate = makeValidatorForRange(0, width - 1);
     const validYCoordinate = makeValidatorForRange(0, height - 1);
@@ -54,7 +54,7 @@ function turnOnOrOffTricolor(i, j, oldPixels, height, width) {
 
     // vector way
 
-    aliveNeighboursByColors = aliveNeighboursByColors.map((colorSum, colorIdx) => vectorsToCheck
+    aliveNeighboursByColor = aliveNeighboursByColor.map((colorSum, colorIdx) => vectorsToCheck
         // translate to point [j, i]
         .map(([x, y]) => ([x + j, y + i]))
         // filter out points out of bounds
@@ -65,7 +65,8 @@ function turnOnOrOffTricolor(i, j, oldPixels, height, width) {
             colorSum,
         ));
 
-    return aliveNeighboursByColors.map(
+    // Should the central cells be alive? (color index iterates over colors)
+    return aliveNeighboursByColor.map(
         (colorSum, colorIdx) => classicGoLTricolorRule(colorSum, oldPixels, i, j, colorIdx),
     );
 }
@@ -90,11 +91,11 @@ function evolve(pixels) {
 }
 
 const state = {
-    pixels: randomPixels(100, 100),
+    pixels: randomPixelsTricolor(100, 100),
 };
 
 const getters = {
-    pixel: (s) => (i, j) => s.pixels[i][j],
+    pixel: (s) => (i, j, col) => s.pixels[i][j][col],
 };
 
 const mutations = {

@@ -18,7 +18,7 @@ function randomPixels(width, height) {
 }
 
 function makeValidatorForRange(a, b) {
-    return (n) => (n >= a && n <= b);
+    return (n) => (a <= n && n <= b);
 }
 
 /**
