@@ -1,10 +1,10 @@
 <template>
     <div>
-        GolContainer
+        TricolorContainer
         <table cellspacing="0" cellpadding="0">
             <tr v-for="(row, i) in pixels" :key="i">
                 <td v-for="(pixel, j) in row"
-                    :key="j" :style="pixelStyle(pixel)"
+                    :key="j" :style="pixelStyleTricolor(pixel)"
                     @click="addCell(i,j)"></td>
             </tr>
         </table>
@@ -39,18 +39,18 @@ export default {
     },
 
     computed: {
-        ...mapState('classicGoL', ['pixels']),
+        ...mapState('GoLTricolor', ['pixels']),
     },
 
     methods: {
-        ...mapActions('classicGoL', ['stepForward']),
+        ...mapActions('GoLTricolor', ['stepForward']),
 
-        pixelStyle(bit) {
-            return `background-color: rgb(${255 * (1 - bit)},${255 * (1 - bit)},${255 * (1 - bit)})`;
+        pixelStyleTricolor(bits) {
+            return `background-color: rgb(${255 * (bits[0])},${255 * (bits[1])},${255 * (bits[2])})`;
         },
 
         addCell(i, j) {
-            this.pixels[i][j] = 1;
+            this.pixels[i][j] = [1, 1, 1];
         },
     },
 

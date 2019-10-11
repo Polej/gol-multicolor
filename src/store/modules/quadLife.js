@@ -51,7 +51,7 @@ function makeValidatorForRange(a, b) {
 }
 
 /**
- * @param colorIdx color index
+ * QuadLifeRule produces number symbolizing empty cell or one of 4 ON colors.
  */
 function quadLifeRule(aliveNeighboursByColor, oldPixels, i, j) {
     const centralPoint = oldPixels[i][j];
@@ -62,25 +62,21 @@ function quadLifeRule(aliveNeighboursByColor, oldPixels, i, j) {
     const maxColorIdx = indexOfMax(rest);
     const maxColorQuantity = rest[maxColorIdx];
 
-    // empty cell logic
+    // give birth to a color for which there is majority (>=2 out of 3)
     if (centralPoint === 0 && (totalNumberOfAlive === 3)
         && maxColorQuantity >= 2) {
         return maxColorIdx + 1;
     }
     if (centralPoint === 0 && totalNumberOfAlive === 3
-        // there are 3 groups with num === 1 each
+        // are there 3 groups with num === 1 each?
         && rest.filter((number) => number === 1).length === 3) {
+        // give birth to the fourth non-present here color
         return rest.findIndex((number) => number === 0) + 1;
     }
+    // if there is central point, make it stay alive when 2 or 3 neighbours
     if (centralPoint !== 0 && (totalNumberOfAlive === 2 || totalNumberOfAlive === 3)) {
         return centralPoint;
     }
-    // if (aliveNeighbours === 3) {
-    //     return 1;
-    // }
-    // if (aliveNeighbours === 2 && oldPixels[i][j][colorIdx] === 1) {
-    //     return 1;
-    // }
     return 0;
 }
 
@@ -115,7 +111,7 @@ function turnOnOrOffQuadLife(i, j, oldPixels, height, width) {
             colorSum,
         ));
 
-    // Should the central cells be alive? (color index iterates over colors)
+    // Should the central cell be alive?
     return quadLifeRule(aliveNeighboursByColor, oldPixels, i, j);
 }
 
@@ -144,6 +140,14 @@ const state = {
 
 const getters = {
     pixel: (s) => (i, j, col) => s.pixels[i][j][col],
+    pixelStyleQuadLife: (s) => (i, j) => {
+        const number = s.pixels[i][j];
+        if (number === 1) return 'background-color: rgb(255, 0, 0)';
+        if (number === 2) return 'background-color: rgb(0, 255, 0)';
+        if (number === 3) return 'background-color: rgb(0, 0, 255)';
+        if (number === 4) return 'background-color: rgb(255, 255, 0)';
+        return 'background-color: rgb(255, 255, 255)';
+    },
 };
 
 const mutations = {

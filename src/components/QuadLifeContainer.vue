@@ -1,10 +1,10 @@
 <template>
     <div>
-        GolContainer
+        QuadLifeContainer
         <table cellspacing="0" cellpadding="0">
             <tr v-for="(row, i) in pixels" :key="i">
                 <td v-for="(pixel, j) in row"
-                    :key="j" :style="pixelStyle(pixel)"
+                    :key="j" :style="pixelStyleQuadLife(pixel)"
                     @click="addCell(i,j)"></td>
             </tr>
         </table>
@@ -39,18 +39,22 @@ export default {
     },
 
     computed: {
-        ...mapState('classicGoL', ['pixels']),
+        ...mapState('quadLife', ['pixels']),
     },
 
     methods: {
-        ...mapActions('classicGoL', ['stepForward']),
+        ...mapActions('quadLife', ['stepForward']),
 
-        pixelStyle(bit) {
-            return `background-color: rgb(${255 * (1 - bit)},${255 * (1 - bit)},${255 * (1 - bit)})`;
+        pixelStyleQuadLife(number) {
+            if (number === 1) return 'background-color: rgb(255, 0, 0)';
+            if (number === 2) return 'background-color: rgb(0, 255, 0)';
+            if (number === 3) return 'background-color: rgb(0, 0, 255)';
+            if (number === 4) return 'background-color: rgb(255, 255, 0)';
+            return 'background-color: rgb(255, 255, 255)';
         },
 
         addCell(i, j) {
-            this.pixels[i][j] = 1;
+            this.pixels[i][j] = Math.floor(Math.random() * 5);
         },
     },
 
