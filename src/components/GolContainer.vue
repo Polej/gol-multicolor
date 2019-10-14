@@ -1,6 +1,7 @@
 <template>
     <div>
         GolContainer
+        <button @click="toggleStart">Pause</button>
         <table cellspacing="0" cellpadding="0">
             <tr v-for="(row, i) in pixels" :key="i">
                 <td v-for="(pixel, j) in row"
@@ -39,7 +40,7 @@ export default {
     },
 
     methods: {
-        ...mapActions(['stepForward', 'start', 'stop']),
+        ...mapActions(['stepForward', 'start', 'stop', 'toggleStart']),
 
         pixelStyle(bit) {
             return `background-color: rgb(${255 * (1 - bit)},${255 * (1 - bit)},${255 * (1 - bit)})`;
