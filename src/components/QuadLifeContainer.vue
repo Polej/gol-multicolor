@@ -24,33 +24,32 @@ tr
 </style>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
 
+const { mapState, mapActions } = createNamespacedHelpers('quadLife');
+
+const color = {
+    1: 'rgb(255, 0, 0)',
+    2: 'rgb(0, 255, 0)',
+    3: 'rgb(0, 0, 255)',
+    4: 'rgb(255, 255, 0)',
+    0: 'rgb(255, 255, 255)',
+};
 
 export default {
-    data() {
-        return {
-            interval: null,
-        };
-    },
-
     mounted() {
-        if (!this.interval) this.interval = setInterval(() => this.stepForward(), 100);
+        this.start();
     },
 
     computed: {
-        ...mapState('quadLife', ['pixels']),
+        ...mapState(['pixels']),
     },
 
     methods: {
-        ...mapActions('quadLife', ['stepForward']),
+        ...mapActions(['stepForward', 'start', 'stop']),
 
         pixelStyleQuadLife(number) {
-            if (number === 1) return 'background-color: rgb(255, 0, 0)';
-            if (number === 2) return 'background-color: rgb(0, 255, 0)';
-            if (number === 3) return 'background-color: rgb(0, 0, 255)';
-            if (number === 4) return 'background-color: rgb(255, 255, 0)';
-            return 'background-color: rgb(255, 255, 255)';
+            return `background-color: ${color[number]}`;
         },
 
         addCell(i, j) {
@@ -59,7 +58,7 @@ export default {
     },
 
     destroyed() {
-        if (this.interval) clearInterval(this.interval);
+        this.stop();
     },
 };
 </script>

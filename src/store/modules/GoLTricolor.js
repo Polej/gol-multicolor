@@ -1,3 +1,5 @@
+import makeValidatorForRange from '../../helpers';
+
 const vectorsToCheck = [[-1, -1], [-1, 0], [-1, 1],
     [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
 
@@ -19,10 +21,6 @@ function randomPixelsTricolor(width, height) {
             Math.round(Math.random()),
         ])
     ));
-}
-
-function makeValidatorForRange(a, b) {
-    return (n) => (a <= n && n <= b);
 }
 
 /**
@@ -92,6 +90,7 @@ function evolve(pixels) {
 
 const state = {
     pixels: randomPixelsTricolor(100, 100),
+    interval: null,
 };
 
 const getters = {
@@ -100,14 +99,30 @@ const getters = {
 
 const mutations = {
     stepForward(s) {
-        /* eslint-disable-next-line no-param-reassign */
         s.pixels = evolve(s.pixels);
+    },
+
+    setInterval(s, intrvl) {
+        s.interval = intrvl;
     },
 };
 
 const actions = {
     stepForward({ commit }) {
         commit('stepForward');
+    },
+
+    start({ commit, state: s, dispatch }) {
+        if (!s.interval) {
+            commit('setInterval', setInterval(() => dispatch('stepForward', 100)));
+        }
+    },
+
+    stop({ commit, state: s }) {
+        if (s.interval) {
+            clearInterval(s.interval);
+            commit('setInterval', null);
+        }
     },
 };
 

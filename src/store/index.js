@@ -14,7 +14,26 @@ export default new Vuex.Store(
             classicGoL,
             GoLTricolor,
             quadLife,
-            // game,
+        },
+
+        state: {
+            container: null,
+        },
+
+        getters: {
+            container: ({ container }) => container,
+        },
+
+        mutations: {
+            setContainer(s, container) {
+                s.container = container;
+            },
+        },
+
+        actions: {
+            setContainer({ commit }, container) {
+                commit('setContainer', container);
+            },
         },
     },
 );
