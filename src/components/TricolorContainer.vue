@@ -24,26 +24,22 @@ tr
 </style>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapState, mapActions } = createNamespacedHelpers('GoLTricolor');
 
 
 export default {
-    data() {
-        return {
-            interval: null,
-        };
-    },
-
     mounted() {
-        if (!this.interval) this.interval = setInterval(() => this.stepForward(), 100);
+        this.start();
     },
 
     computed: {
-        ...mapState('GoLTricolor', ['pixels']),
+        ...mapState(['pixels']),
     },
 
     methods: {
-        ...mapActions('GoLTricolor', ['stepForward']),
+        ...mapActions(['stepForward', 'start', 'stop']),
 
         pixelStyleTricolor(bits) {
             return `background-color: rgb(${255 * (bits[0])},${255 * (bits[1])},${255 * (bits[2])})`;
@@ -55,7 +51,7 @@ export default {
     },
 
     destroyed() {
-        if (this.interval) clearInterval(this.interval);
+        this.stop();
     },
 };
 </script>

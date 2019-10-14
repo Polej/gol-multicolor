@@ -1,3 +1,5 @@
+import makeValidatorForRange from '../../helpers';
+
 const vectorsToCheck = [[-1, -1], [-1, 0], [-1, 1],
     [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
 
@@ -21,10 +23,6 @@ function randomPixelsTricolor(width, height) {
     ));
 }
 
-function makeValidatorForRange(a, b) {
-    return (n) => (a <= n && n <= b);
-}
-
 /**
  * @param colorIdx color index
  */
@@ -40,7 +38,15 @@ function classicGoLTricolorRule(aliveNeighbours, oldPixels, i, j, colorIdx) {
 }
 
 /**
- * Basic logic function saying if pixel should be turned on or off.
+ * Basic logic function saying if pixel colors should be turned on or off.
+ * @param {integer} i y-index of central cell
+ * @param {integer} j x-index of central cell
+ * @param {Array} oldPixels Array of Arrays containing pixel color data as Array
+ * with 3 elements, each for different color
+ * @param {integer} height Maximal index for i, the height of GoL board
+ * @param {integer} width Maximal index for j, the width of GoL board
+ * @returns {Array} Array with 3 elements, each for different colour, each may
+ * take value of 1 or 0
  */
 function turnOnOrOffTricolor(i, j, oldPixels, height, width) {
     let aliveNeighboursByColor = [0, 0, 0];
@@ -92,6 +98,7 @@ function evolve(pixels) {
 
 const state = {
     pixels: randomPixelsTricolor(100, 100),
+    interval: null,
 };
 
 const getters = {
@@ -100,14 +107,30 @@ const getters = {
 
 const mutations = {
     stepForward(s) {
-        /* eslint-disable-next-line no-param-reassign */
         s.pixels = evolve(s.pixels);
+    },
+
+    setInterval(s, interval) {
+        s.interval = interval;
     },
 };
 
 const actions = {
     stepForward({ commit }) {
         commit('stepForward');
+    },
+
+    start({ commit, state: s, dispatch }) {
+        if (!s.interval) {
+            commit('setInterval', setInterval(() => dispatch('stepForward', 100)));
+        }
+    },
+
+    stop({ commit, state: s }) {
+        if (s.interval) {
+            clearInterval(s.interval);
+            commit('setInterval', null);
+        }
     },
 };
 

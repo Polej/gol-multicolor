@@ -1,3 +1,5 @@
+import makeValidatorForRange from '../../helpers';
+
 const vectorsToCheck = [[-1, -1], [-1, 0], [-1, 1],
     [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
 
@@ -15,10 +17,6 @@ function randomPixels(width, height) {
     return makeArray(height, () => (
         makeArray(width, () => Math.round(Math.random()))
     ));
-}
-
-function makeValidatorForRange(a, b) {
-    return (n) => (a <= n && n <= b);
 }
 
 /**
@@ -78,6 +76,7 @@ function evolve(pixels) {
 
 const state = {
     pixels: randomPixels(100, 100),
+    interval: null,
 };
 
 const getters = {
@@ -86,14 +85,30 @@ const getters = {
 
 const mutations = {
     stepForward(s) {
-        /* eslint-disable-next-line no-param-reassign */
         s.pixels = evolve(s.pixels);
+    },
+
+    setInterval(s, interval) {
+        s.interval = interval;
     },
 };
 
 const actions = {
     stepForward({ commit }) {
         commit('stepForward');
+    },
+
+    start({ commit, state: s, dispatch }) {
+        if (!s.interval) {
+            commit('setInterval', setInterval(() => dispatch('stepForward', 100)));
+        }
+    },
+
+    stop({ commit, state: s }) {
+        if (s.interval) {
+            clearInterval(s.interval);
+            commit('setInterval', null);
+        }
     },
 };
 
