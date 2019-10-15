@@ -38,7 +38,15 @@ function classicGoLTricolorRule(aliveNeighbours, oldPixels, i, j, colorIdx) {
 }
 
 /**
- * Basic logic function saying if pixel should be turned on or off.
+ * Basic logic function saying if pixel colors should be turned on or off.
+ * @param {integer} i y-index of central cell
+ * @param {integer} j x-index of central cell
+ * @param {Array} oldPixels Array of Arrays containing pixel color data as Array
+ * with 3 elements, each for different color
+ * @param {integer} height Maximal index for i, the height of GoL board
+ * @param {integer} width Maximal index for j, the width of GoL board
+ * @returns {Array} Array with 3 elements, each for different colour, each may
+ * take value of 1 or 0
  */
 function turnOnOrOffTricolor(i, j, oldPixels, height, width) {
     let aliveNeighboursByColor = [0, 0, 0];
@@ -102,8 +110,8 @@ const mutations = {
         s.pixels = evolve(s.pixels);
     },
 
-    setInterval(s, intrvl) {
-        s.interval = intrvl;
+    setInterval(s, interval) {
+        s.interval = interval;
     },
 };
 

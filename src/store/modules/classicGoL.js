@@ -88,8 +88,8 @@ const mutations = {
         s.pixels = evolve(s.pixels);
     },
 
-    setInterval(s, intrvl) {
-        s.interval = intrvl;
+    setInterval(s, interval) {
+        s.interval = interval;
     },
 };
 

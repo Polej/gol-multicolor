@@ -14,37 +14,35 @@ function indexOfMax(a) {
     return a.reduce((iMax, x, i, arr) => (x > arr[iMax] ? i : iMax), 0);
 }
 
-
 // When this const is set to 4, half of the container is empty,
 // and half is colored, giving colors free space to evolve.
 // It should be integer.
-const PROBABILITY_FOR_ZERO_MULTIPLYING_FACTOR = 4;
+const CHANCE_TO_GET_EMPTY_CELL = 4; // out of (CHANCE_TO_GET_EMPTY_CELL + 4) = 1/2
 
 
 /**
  *  This function produces random integer number in interval [0, 4].
  *  If the number is less than
- *  PROBABILITY_FOR_ZERO_MULTIPLYING_FACTOR, it yields 0. Therefore there is
+ *  CHANCE_TO_GET_EMPTY_CELL, it yields 0. Therefore there is
  *  greater probability to see 0. It is done to create more free space for
  *  colors to evolve.
  *  For remaining colors it yields 1,2,3,4 with standard probabilities
  *  (number between x and x+1 is transformed to
-     * x - (PROBABILITY_FOR_ZERO_MULTIPLYING_FACTOR - 1)).
+     * (x - (CHANCE_TO_GET_EMPTY_CELL - 1)).
  *
- * so [0, PROBABILITY_FOR_ZERO_MULTIPLYING_FACTOR] -> 0
- * and
+ * so [0, CHANCE_TO_GET_EMPTY_CELL] -> 0
+ * and e.g.
  * 4.1 -> 1
+ * 5.5 -> 2
  * 6.3 -> 3
  * 7.5 -> 4
  */
 function nonUniformFlooredRandom() {
     // 4 is the number of colours
-    const random = Math.random() * (PROBABILITY_FOR_ZERO_MULTIPLYING_FACTOR + 4);
-
-    if (random <= PROBABILITY_FOR_ZERO_MULTIPLYING_FACTOR) {
-        return 0;
-    }
-    return Math.floor(random - (PROBABILITY_FOR_ZERO_MULTIPLYING_FACTOR - 1));
+    const d8 = Math.floor(Math.random() * (CHANCE_TO_GET_EMPTY_CELL + 4)); // {0..8}
+    return Math.floor(Math.max(0,
+        d8 - (CHANCE_TO_GET_EMPTY_CELL - 1))); // half chance to get 0, 1/8 chance to get {1..4}
+        // when CHANCE_TO_GET_EMPTY_CELL = 4
 }
 
 /**
@@ -59,14 +57,15 @@ function randomPixelsQuadLife(width, height) {
 /**
  * QuadLifeRule produces number symbolizing empty cell (0) or one of 4 ON colors. (1-4)
  */
-function quadLifeRule(aliveNeighboursByColor, oldPixels, i, j) {
+function quadLifeRule(neighboursByType, oldPixels, i, j) {
     const centralPoint = oldPixels[i][j];
     /* eslint-disable-next-line no-unused-vars */
-    const [numberOfEmptyCells, ...rest] = aliveNeighboursByColor;
-    const totalNumberOfAlive = rest.reduce((a, b) => a + b, 0);
 
+    const [numberOfEmptyCells, ...rest] = neighboursByType;
+    const totalNumberOfAlive = rest.reduce((a, b) => a + b, 0);
+    
     // This is resulting index from `rest` Array, to have position on
-    // `aliveNeighboursByColor` Array, it is needed to add +1 to the index.
+    // `neighboursByType` Array, it is needed to add +1 to the index.
     const maxColorIdx = indexOfMax(rest);
     const maxColorQuantity = rest[maxColorIdx];
 
@@ -101,7 +100,8 @@ function quadLifeRule(aliveNeighboursByColor, oldPixels, i, j) {
  * Basic logic function saying if pixel should be turned on or off.
  */
 function turnOnOrOffQuadLife(i, j, oldPixels, height, width) {
-    let aliveNeighboursByColor = [0, 0, 0, 0, 0];
+    let neighboursByType = [0, 0, 0, 0, 0]; // empty cells at first place [0],
+    // the rest [1], [2], [3], [4] are numbers of cells for 4 different colors
 
     const validXCoordinate = makeValidatorForRange(0, width - 1);
     const validYCoordinate = makeValidatorForRange(0, height - 1);
@@ -113,7 +113,7 @@ function turnOnOrOffQuadLife(i, j, oldPixels, height, width) {
     // firstly, scan the vicinity, and filter points if out of bounds,
     // then calculate how many cells are in the vicinity for a given color
 
-    aliveNeighboursByColor = aliveNeighboursByColor.map((colorSum, colorIdx) => vectorsToCheck
+    neighboursByType = neighboursByType.map((colorSum, colorIdx) => vectorsToCheck
         // translate to point [j, i]
         .map(([x, y]) => ([x + j, y + i]))
         // filter out points out of bounds
@@ -130,7 +130,7 @@ function turnOnOrOffQuadLife(i, j, oldPixels, height, width) {
         ));
 
     // Should the central cell be alive?
-    return quadLifeRule(aliveNeighboursByColor, oldPixels, i, j);
+    return quadLifeRule(neighboursByType, oldPixels, i, j);
 }
 
 /**
@@ -158,7 +158,7 @@ const state = {
 };
 
 const getters = {
-    pixel: (s) => (i, j, col) => s.pixels[i][j][col],
+    pixel: (s) => (i, j) => s.pixels[i][j],
 };
 
 const mutations = {
@@ -166,8 +166,8 @@ const mutations = {
         s.pixels = evolve(s.pixels);
     },
 
-    setInterval(s, intrvl) {
-        s.interval = intrvl;
+    setInterval(s, interval) {
+        s.interval = interval;
     },
 };
 
@@ -188,7 +188,7 @@ const actions = {
             commit('setInterval', null);
         }
     },
-
+  
     toggleStart({ state: s, dispatch }) {
         if (s.interval) {
             dispatch('stop');
