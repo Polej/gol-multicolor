@@ -1,10 +1,10 @@
 <template>
     <div>
-        GolContainer
+        QuadLifeContainer
         <table cellspacing="0" cellpadding="0">
             <tr v-for="(row, i) in pixels" :key="i">
                 <td v-for="(pixel, j) in row"
-                    :key="j" :style="pixelStyle(pixel)"
+                    :key="j" :style="pixelStyleQuadLife(pixel)"
                     @click="addCell(i,j)"></td>
             </tr>
         </table>
@@ -26,8 +26,15 @@ tr
 <script>
 import { createNamespacedHelpers } from 'vuex';
 
-const { mapState, mapActions } = createNamespacedHelpers('classicGoL');
+const { mapState, mapActions } = createNamespacedHelpers('quadLife');
 
+const color = {
+    1: 'rgb(255, 0, 0)',
+    2: 'rgb(0, 255, 0)',
+    3: 'rgb(0, 0, 255)',
+    4: 'rgb(255, 255, 0)',
+    0: 'rgb(255, 255, 255)',
+};
 
 export default {
     mounted() {
@@ -41,12 +48,12 @@ export default {
     methods: {
         ...mapActions(['stepForward', 'start', 'stop']),
 
-        pixelStyle(bit) {
-            return `background-color: rgb(${255 * (1 - bit)},${255 * (1 - bit)},${255 * (1 - bit)})`;
+        pixelStyleQuadLife(number) {
+            return `background-color: ${color[number]}`;
         },
 
         addCell(i, j) {
-            this.pixels[i][j] = 1;
+            this.pixels[i][j] = Math.floor(Math.random() * 5);
         },
     },
 

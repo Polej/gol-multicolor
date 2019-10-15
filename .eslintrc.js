@@ -12,12 +12,13 @@ module.exports = {
     env: {
         browser: true,
         node: true,
-        mocha: true
+        mocha: true,
     },
     globals: {
         expect: true
     },
     rules: {
         'indent': ['error', 4],
+        'no-param-reassign': [2, {"props": false}],
     },
 }

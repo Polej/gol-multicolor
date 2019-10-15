@@ -1,10 +1,10 @@
 <template>
     <div>
-        GolContainer
+        TricolorContainer
         <table cellspacing="0" cellpadding="0">
             <tr v-for="(row, i) in pixels" :key="i">
                 <td v-for="(pixel, j) in row"
-                    :key="j" :style="pixelStyle(pixel)"
+                    :key="j" :style="pixelStyleTricolor(pixel)"
                     @click="addCell(i,j)"></td>
             </tr>
         </table>
@@ -26,7 +26,7 @@ tr
 <script>
 import { createNamespacedHelpers } from 'vuex';
 
-const { mapState, mapActions } = createNamespacedHelpers('classicGoL');
+const { mapState, mapActions } = createNamespacedHelpers('GoLTricolor');
 
 
 export default {
@@ -41,12 +41,12 @@ export default {
     methods: {
         ...mapActions(['stepForward', 'start', 'stop']),
 
-        pixelStyle(bit) {
-            return `background-color: rgb(${255 * (1 - bit)},${255 * (1 - bit)},${255 * (1 - bit)})`;
+        pixelStyleTricolor(bits) {
+            return `background-color: rgb(${255 * (bits[0])},${255 * (bits[1])},${255 * (bits[2])})`;
         },
 
         addCell(i, j) {
-            this.pixels[i][j] = 1;
+            this.pixels[i][j] = [1, 1, 1];
         },
     },
 
