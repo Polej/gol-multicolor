@@ -132,6 +132,14 @@ const actions = {
             commit('setInterval', null);
         }
     },
+
+    toggleStart({ state: s, dispatch }) {
+        if (s.interval) {
+            dispatch('stop');
+        } else {
+            dispatch('start');
+        }
+    },
 };
 
 export default {

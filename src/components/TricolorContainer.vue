@@ -1,6 +1,7 @@
 <template>
     <div>
         TricolorContainer
+        <button @click="toggleStart">Pause</button>
         <table cellspacing="0" cellpadding="0">
             <tr v-for="(row, i) in pixels" :key="i">
                 <td v-for="(pixel, j) in row"
@@ -39,7 +40,7 @@ export default {
     },
 
     methods: {
-        ...mapActions(['stepForward', 'start', 'stop']),
+        ...mapActions(['stepForward', 'start', 'stop', 'toggleStart']),
 
         pixelStyleTricolor(bits) {
             return `background-color: rgb(${255 * (bits[0])},${255 * (bits[1])},${255 * (bits[2])})`;

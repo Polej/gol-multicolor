@@ -14,7 +14,6 @@ function indexOfMax(a) {
     return a.reduce((iMax, x, i, arr) => (x > arr[iMax] ? i : iMax), 0);
 }
 
-
 // When this const is set to 4, half of the container is empty,
 // and half is colored, giving colors free space to evolve.
 // It should be integer.
@@ -61,9 +60,10 @@ function randomPixelsQuadLife(width, height) {
 function quadLifeRule(neighboursByType, oldPixels, i, j) {
     const centralPoint = oldPixels[i][j];
     /* eslint-disable-next-line no-unused-vars */
+
     const [numberOfEmptyCells, ...rest] = neighboursByType;
     const totalNumberOfAlive = rest.reduce((a, b) => a + b, 0);
-
+    
     // This is resulting index from `rest` Array, to have position on
     // `neighboursByType` Array, it is needed to add +1 to the index.
     const maxColorIdx = indexOfMax(rest);
@@ -186,6 +186,14 @@ const actions = {
         if (s.interval) {
             clearInterval(s.interval);
             commit('setInterval', null);
+        }
+    },
+  
+    toggleStart({ state: s, dispatch }) {
+        if (s.interval) {
+            dispatch('stop');
+        } else {
+            dispatch('start');
         }
     },
 };
