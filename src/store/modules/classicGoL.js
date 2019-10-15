@@ -77,6 +77,8 @@ function evolve(pixels) {
 const state = {
     pixels: randomPixels(100, 100),
     interval: null,
+    lastI: null,
+    lastJ: null,
 };
 
 const getters = {
@@ -90,6 +92,15 @@ const mutations = {
 
     setInterval(s, interval) {
         s.interval = interval;
+    },
+
+    addCell(s, { i, j }) {
+        if (i !== s.lastI || j !== s.lastJ) {
+            s.pixels[i].splice(j, 1, Math.round(Math.random()));
+
+            s.lastI = i;
+            s.lastJ = j;
+        }
     },
 };
 

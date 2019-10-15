@@ -42,7 +42,7 @@ function nonUniformFlooredRandom() {
     const d8 = Math.floor(Math.random() * (CHANCE_TO_GET_EMPTY_CELL + 4)); // {0..8}
     return Math.floor(Math.max(0,
         d8 - (CHANCE_TO_GET_EMPTY_CELL - 1))); // half chance to get 0, 1/8 chance to get {1..4}
-        // when CHANCE_TO_GET_EMPTY_CELL = 4
+    // when CHANCE_TO_GET_EMPTY_CELL = 4
 }
 
 /**
@@ -60,10 +60,9 @@ function randomPixelsQuadLife(width, height) {
 function quadLifeRule(neighboursByType, oldPixels, i, j) {
     const centralPoint = oldPixels[i][j];
     /* eslint-disable-next-line no-unused-vars */
-
     const [numberOfEmptyCells, ...rest] = neighboursByType;
     const totalNumberOfAlive = rest.reduce((a, b) => a + b, 0);
-    
+
     // This is resulting index from `rest` Array, to have position on
     // `neighboursByType` Array, it is needed to add +1 to the index.
     const maxColorIdx = indexOfMax(rest);
@@ -155,6 +154,8 @@ function evolve(pixels) {
 const state = {
     pixels: randomPixelsQuadLife(100, 100),
     interval: null,
+    lastI: null,
+    lastJ: null,
 };
 
 const getters = {
@@ -168,6 +169,15 @@ const mutations = {
 
     setInterval(s, interval) {
         s.interval = interval;
+    },
+
+    addCell(s, { i, j }) {
+        if (i !== s.lastI || j !== s.lastJ) {
+            s.pixels[i].splice(j, 1, Math.floor(Math.random() * 5));
+
+            s.lastI = i;
+            s.lastJ = j;
+        }
     },
 };
 
@@ -188,7 +198,7 @@ const actions = {
             commit('setInterval', null);
         }
     },
-  
+
     toggleStart({ state: s, dispatch }) {
         if (s.interval) {
             dispatch('stop');

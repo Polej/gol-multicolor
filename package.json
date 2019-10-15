@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "v-dragged": "0.0.5",
     "vue": "^2.6.10",
     "vue-router": "^3.1.3",
     "vuex": "^3.1.1"
