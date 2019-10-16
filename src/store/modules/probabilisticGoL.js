@@ -10,9 +10,9 @@ function makeArray(len, gen) {
     return Array.from(new Array(len), gen);
 }
 
-function indexOfMax(a) {
-    return a.reduce((iMax, x, i, arr) => (x > arr[iMax] ? i : iMax), 0);
-}
+// function indexOfMax(a) {
+//     return a.reduce((iMax, x, i, arr) => (x > arr[iMax] ? i : iMax), 0);
+// }
 
 // When this const is set to 4, half of the container is empty,
 // and half is colored, giving colors free space to evolve.
@@ -54,41 +54,41 @@ function randomPixelsQuadLife(width, height) {
     ));
 }
 
+function randomPixelFromProbabilityArray(arr) {
+    const total = arr.reduce((a, b) => a + b, 0);
+    const probabilities = arr.map((pI) => pI / total);
+
+    let cumulatedProb = 0;
+
+    let whichOne = null;
+
+    const random = Math.random();
+
+    probabilities.forEach((prob, i) => {
+        if (cumulatedProb <= random && random < cumulatedProb + prob) {
+            whichOne = i;
+        }
+        cumulatedProb += prob;
+    });
+
+    return whichOne;
+}
+
 /**
  * QuadLifeRule produces number symbolizing empty cell (0) or one of 4 ON colors. (1-4)
  */
-function quadLifeRule(neighboursByType, oldPixels, i, j) {
+function probabilisticRule(neighboursByType, oldPixels, i, j) {
     const centralPoint = oldPixels[i][j];
     /* eslint-disable-next-line no-unused-vars */
     const [numberOfEmptyCells, ...rest] = neighboursByType;
     const totalNumberOfAlive = rest.reduce((a, b) => a + b, 0);
 
-    // This is resulting index from `rest` Array, to have position on
-    // `neighboursByType` Array, it is needed to add +1 to the index.
-    const maxColorIdx = indexOfMax(rest);
-    const maxColorQuantity = rest[maxColorIdx];
-
-    // firstly, there are 2 cases with empty central cell
-
-    // central cell empty,
-    // give birth to a color for which there is majority (>=2 out of 3)
-    if (centralPoint === 0 && (totalNumberOfAlive === 3)
-        && maxColorQuantity >= 2) {
-        return maxColorIdx + 1; // + 1 because we search idx on input Array.
-        // explained before
+    // when cell is empty and has 3 neighbours - give birth, with probabilities
+    if (centralPoint === 0 && totalNumberOfAlive === 3) {
+        return randomPixelFromProbabilityArray(rest) + 1; // shift by 1 to have index
+        // corresponding to `neighboursByType` array
     }
-    // central cell empty
-    // give birth to 4th colour, when there are 3 different cells
-    if (centralPoint === 0 && totalNumberOfAlive === 3
-        // are there 3 colors each having one cell?
-        && rest.filter((number) => number === 1).length === 3) {
-        // give birth to the fourth non-present here color
-        return rest.findIndex((number) => number === 0) + 1;
-    }
-
-    // living central cell
-
-    // if there is living cell in the central point, make it stay alive when 2 or 3 neighbours
+    // stay alive when 2 or 3
     if (centralPoint !== 0 && (totalNumberOfAlive === 2 || totalNumberOfAlive === 3)) {
         return centralPoint;
     }
@@ -129,7 +129,7 @@ function turnOnOrOffQuadLife(i, j, oldPixels, height, width) {
         ));
 
     // Should the central cell be alive?
-    return quadLifeRule(neighboursByType, oldPixels, i, j);
+    return probabilisticRule(neighboursByType, oldPixels, i, j);
 }
 
 /**

@@ -96,7 +96,9 @@ const mutations = {
 
     addCell(s, { i, j }) {
         if (i !== s.lastI || j !== s.lastJ) {
-            s.pixels[i].splice(j, 1, Math.round(Math.random()));
+            if (s.pixels[i]) {
+                s.pixels[i].splice(j, 1, Math.round(Math.random()));
+            }
 
             s.lastI = i;
             s.lastJ = j;

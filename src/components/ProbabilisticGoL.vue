@@ -1,6 +1,6 @@
 <template>
     <div>
-        QuadLifeContainer
+        ProbabilisticGoLContainer
         <button @click="toggleStart">Pause</button>
         <table cellspacing="0" cellpadding="0" v-dragged="onDragged">
             <tr v-for="(row, i) in pixels" :key="i">
@@ -27,7 +27,7 @@ tr
 <script>
 import { createNamespacedHelpers } from 'vuex';
 
-const { mapState, mapActions, mapMutations } = createNamespacedHelpers('quadLife');
+const { mapState, mapActions, mapMutations } = createNamespacedHelpers('probabilisticGoL');
 
 const color = {
     0: 'rgb(255, 255, 255)',
