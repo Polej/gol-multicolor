@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 import classicGoL from './modules/classicGoL';
 import GoLTricolor from './modules/GoLTricolor';
 import quadLife from './modules/quadLife';
-// import stage from './modules/stage';
+import probabilisticGoL from './modules/probabilisticGoL';
 
 Vue.use(Vuex);
 
@@ -14,6 +14,7 @@ export default new Vuex.Store(
             classicGoL,
             GoLTricolor,
             quadLife,
+            probabilisticGoL,
         },
 
         state: {
