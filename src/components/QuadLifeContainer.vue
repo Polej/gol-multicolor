@@ -2,7 +2,7 @@
     <div>
         QuadLifeContainer
         <button @click="toggleStart">Pause</button>
-        <table cellspacing="0" cellpadding="0">
+        <table cellspacing="0" cellpadding="0" v-dragged="onDragged">
             <tr v-for="(row, i) in pixels" :key="i">
                 <td v-for="(pixel, j) in row"
                     :key="j" :style="pixelStyleQuadLife(pixel)"
@@ -27,7 +27,7 @@ tr
 <script>
 import { createNamespacedHelpers } from 'vuex';
 
-const { mapState, mapActions } = createNamespacedHelpers('quadLife');
+const { mapState, mapActions, mapMutations } = createNamespacedHelpers('quadLife');
 
 const color = {
     1: 'rgb(255, 0, 0)',
@@ -36,6 +36,8 @@ const color = {
     4: 'rgb(255, 255, 0)',
     0: 'rgb(255, 255, 255)',
 };
+
+const CELL_SIZE = 6;
 
 export default {
     mounted() {
@@ -47,14 +49,28 @@ export default {
     },
 
     methods: {
+        ...mapMutations(['addCell']),
         ...mapActions(['stepForward', 'start', 'stop', 'toggleStart']),
 
         pixelStyleQuadLife(number) {
             return `background-color: ${color[number]}`;
         },
 
-        addCell(i, j) {
-            this.pixels[i][j] = Math.floor(Math.random() * 5);
+        onDragged({
+            el,
+            clientX,
+            clientY,
+        }) {
+            if ((el.offsetLeft < clientX && clientX < (el.offsetLeft + el.clientWidth))
+                && (el.offsetTop < clientY && clientY < (el.offsetTop + el.clientHeight))) {
+                const xInside = clientX - el.offsetLeft;
+                const yInside = clientY - el.offsetTop;
+
+                const posX = Math.floor(xInside / CELL_SIZE);
+                const posY = Math.floor(yInside / CELL_SIZE);
+
+                this.addCell({ i: posY, j: posX });
+            }
         },
     },
 
