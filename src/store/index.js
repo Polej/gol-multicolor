@@ -5,6 +5,7 @@ import classicGoL from './modules/classicGoL';
 import GoLTricolor from './modules/GoLTricolor';
 import quadLife from './modules/quadLife';
 import probabilisticGoL from './modules/probabilisticGoL';
+import predatorPrey from './modules/predatorPrey';
 
 Vue.use(Vuex);
 
@@ -15,6 +16,7 @@ export default new Vuex.Store(
             GoLTricolor,
             quadLife,
             probabilisticGoL,
+            predatorPrey,
         },
 
         state: {
