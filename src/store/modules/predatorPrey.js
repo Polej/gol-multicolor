@@ -10,78 +10,21 @@ function makeArray(len, gen) {
     return Array.from(new Array(len), gen);
 }
 
-// function indexOfMax(a) {
-//     return a.reduce((iMax, x, i, arr) => (x > arr[iMax] ? i : iMax), 0);
-// }
-
-// When this const is set to 4, half of the container is empty,
-// and half is colored, giving colors free space to evolve.
-// It should be integer.
-const CHANCE_TO_GET_EMPTY_CELL = 2; // out of (CHANCE_TO_GET_EMPTY_CELL + 4) = 1/2
-// const TEMPERATURE = 300;
-
 /**
- *  This function produces random integer number in interval [0, 4].
- *  If the number is less than
- *  CHANCE_TO_GET_EMPTY_CELL, it yields 0. Therefore there is
- *  greater probability to see 0. It is done to create more free space for
- *  colors to evolve.
- *  For remaining colors it yields 1,2,3,4 with standard probabilities
- *  (number between x and x+1 is transformed to
-     * (x - (CHANCE_TO_GET_EMPTY_CELL - 1)).
- *
- * so [0, CHANCE_TO_GET_EMPTY_CELL] -> 0
- * and e.g.
- * 4.1 -> 1
- * 5.5 -> 2
- * 6.3 -> 3
- * 7.5 -> 4
+ * Generate arrays with empty content.
  */
-function nonUniformFlooredRandom() {
-    // 4 is the number of colours
-    const d8 = Math.floor(Math.random() * (CHANCE_TO_GET_EMPTY_CELL + 2)); // {0..8}
-    return Math.floor(Math.max(0,
-        d8 - (CHANCE_TO_GET_EMPTY_CELL - 1))); // half chance to get 0, 1/8 chance to get {1..4}
-    // when CHANCE_TO_GET_EMPTY_CELL = 4
-}
-
-// function emptyPixelsQuadLife(width, height) {
-//     return makeArray(height, () => (
-//         makeArray(width, () => 0)
-//     ));
-// }
-
-/**
- * Generate arrays with random content.
- */
-function randomPixelsQuadLife(width, height) {
+function emptyPixelsPredatorPrey(width, height) {
     return makeArray(height, () => (
-        makeArray(width, () => nonUniformFlooredRandom())
+        makeArray(width, () => 0)
     ));
 }
 
-// function randomPixelFromProbabilityArray(arr) {
-//     const total = arr.reduce((a, b) => a + b, 0);
-//     const probabilities = arr.map((pI) => pI / total);
-//
-//     let cumulatedProb = 0;
-//
-//     let whichOne = null;
-//
-//     const random = Math.random();
-//
-//     probabilities.forEach((prob, i) => {
-//         if (cumulatedProb <= random && random < cumulatedProb + prob) {
-//             whichOne = i;
-//         }
-//         cumulatedProb += prob;
-//     });
-//
-//     return whichOne;
-// }
-
 /**
- * QuadLifeRule produces number symbolizing empty cell (0) or one of 4 ON colors. (1-4)
+ * Predator-Prey rule. [0] are empty cells
+ * [1] are predators
+ * [2] are prey
+ *
+ * @returns {number} Number of state 0, 1, or 2. As above.
  */
 function predatorPreyRule(neighboursByType, oldPixels, i, j) {
     const centralPoint = oldPixels[i][j];
@@ -89,42 +32,29 @@ function predatorPreyRule(neighboursByType, oldPixels, i, j) {
     const [numberOfEmptyCells, ...rest] = neighboursByType;
     const totalNumberOfAlive = rest.reduce((a, b) => a + b, 0);
 
-    // This is resulting index from `rest` Array, to have position on
-    // `neighboursByType` Array, it is needed to add +1 to the index.
-    // const maxColorIdx = indexOfMax(rest);
-    // const maxColorQuantity = rest[maxColorIdx];
-
-    // firstly, there are 2 cases with empty central cell
-
-    // central cell empty,
-    // give birth to a color for which there is majority (>=2 out of 3)
+    // 2 = green prey, 1 = red predator
+    // when central point is empty, and there are 3 neighbours,
+    // and there is one or two predators in neighbourhood,
+    // give birth to predator
     if (centralPoint === 0 && (totalNumberOfAlive === 3)
         && neighboursByType[1] > 0 && neighboursByType[1] !== 3) {
-        return 1; // + 1 because we search idx on input Array.
-        // explained before
+        return 1; // predator
     }
+    // when central point is empty, there are 2 neighbours,
+    // and there are no predators, give birth to new prey
     if (centralPoint === 0 && (totalNumberOfAlive === 2)
         && neighboursByType[1] === 0) {
-        return 2;
+        return 2; // prey
     }
 
-    /* const predOrPrey = randomPixelFromProbabilityArray([0,
-        TEMPERATURE / (1 + TEMPERATURE),
-        1 / (1 + TEMPERATURE)]);
-    if (centralPoint === 2 && (neighboursByType[1] >= neighboursByType[2] + 2)
-        && predOrPrey === 1) {
-        return predOrPrey;
-    } */
-
-    // stay alive when 2 or 3
-    if (centralPoint === 2 && totalNumberOfAlive > 0 && neighboursByType[1] < 2) {
+    // when central point is prey, stay if less than 2 predators
+    if (centralPoint === 2 && neighboursByType[1] < 2) {
         return centralPoint;
     }
+    // when central point is predator, stay if number of prey is nonzero
     if (centralPoint === 1 && neighboursByType[2] > 0) {
         return centralPoint;
     }
-
-    // 2 = green, 1 = red
 
     return 0;
 }
@@ -162,12 +92,12 @@ function turnOnOrOffProbabilisticQuadLife(i, j, oldPixels, height, width) {
             colorSum,
         ));
 
-    // Should the central cell be alive?
+    // Should the central cell be alive? Which state/species?
     return predatorPreyRule(neighboursByType, oldPixels, i, j);
 }
 
 /**
- * Function to apply turnOnOrOff on every pixel, to transform old pixels
+ * Function that applies turnOnOrOff on every pixel, to transform old pixels
  * into newer version, in one time step.
  */
 function evolve(pixels) {
@@ -186,10 +116,10 @@ function evolve(pixels) {
 }
 
 const state = {
-    pixels: randomPixelsQuadLife(100, 100),
+    pixels: emptyPixelsPredatorPrey(100, 100),
     interval: null,
-    lastI: null,
-    lastJ: null,
+    lastI: null, // for UI v-dragged
+    lastJ: null, // for UI v-dragged
 };
 
 const getters = {
