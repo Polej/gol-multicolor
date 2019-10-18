@@ -36,23 +36,23 @@ function predatorPreyRule(neighboursByType, oldPixels, i, j) {
     // when central point is empty, and there are 3 neighbours,
     // and there is one or two predators in neighbourhood,
     // give birth to predator
-    if (centralPoint === 0 && (totalNumberOfAlive === 3)
-        && neighboursByType[1] > 0 && neighboursByType[1] !== 3) {
+    if (centralPoint === 0 && (totalNumberOfAlive === 3) && (neighboursByType[2] > 0)
+        && neighboursByType[1] > 0) {
         return 1; // predator
     }
     // when central point is empty, there are 2 neighbours,
     // and there are no predators, give birth to new prey
-    if (centralPoint === 0 && (totalNumberOfAlive === 2)
+    if (centralPoint === 0 && (totalNumberOfAlive === 1)
         && neighboursByType[1] === 0) {
         return 2; // prey
     }
 
-    // when central point is prey, stay if less than 2 predators
-    if (centralPoint === 2 && neighboursByType[1] < 2) {
+    // when central point is prey, stay if no predator present
+    if (centralPoint === 2 && neighboursByType[1] === 0) {
         return centralPoint;
     }
     // when central point is predator, stay if number of prey is nonzero
-    if (centralPoint === 1 && neighboursByType[2] > 0) {
+    if (centralPoint === 1 && neighboursByType[2] > 0 && neighboursByType[1] < 4) {
         return centralPoint;
     }
 
@@ -62,9 +62,9 @@ function predatorPreyRule(neighboursByType, oldPixels, i, j) {
 /**
  * Basic logic function saying if pixel should be turned on or off.
  */
-function turnOnOrOffProbabilisticQuadLife(i, j, oldPixels, height, width) {
+function turnOnOrOffPredatorPrey(i, j, oldPixels, height, width) {
     let neighboursByType = [0, 0, 0]; // empty cells at first place [0],
-    // the rest [1], [2], [3], [4] are numbers of cells for 4 different colors
+    // the rest [1], [2], are numbers of cells for predator (red) and prey (green)
 
     const validXCoordinate = makeValidatorForRange(0, width - 1);
     const validYCoordinate = makeValidatorForRange(0, height - 1);
@@ -108,7 +108,7 @@ function evolve(pixels) {
 
     const newPixels = oldPixels.map(
         (row, i) => row.map(
-            (pixel, j) => turnOnOrOffProbabilisticQuadLife(i, j, oldPixels, height, width),
+            (pixel, j) => turnOnOrOffPredatorPrey(i, j, oldPixels, height, width),
         ),
     );
 
