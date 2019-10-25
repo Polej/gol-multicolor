@@ -25,13 +25,13 @@ tr
 </style>
 
 <script>
-// import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 
 const CELL_SIZE = 6;
 
 export default {
     props: {
-        vuexModuleName: String,
+        vuexNamespace: String,
         pixelStyleFunction: Function,
     },
 
@@ -39,36 +39,36 @@ export default {
         this.start();
     },
 
-    computed: {
-        // ...mapState(this.vuexModuleName, ['pixels']),
-        pixels() {
-            return this.$store.state[this.vuexModuleName].pixels;
+    computed: mapState({
+        pixels(state) {
+            return state[this.vuexNamespace].pixels;
         },
-    },
+    }),
 
     methods: {
-        // ...mapMutations(this.vuexModuleName, ['addCell']),
-        // ...mapActions(this.vuexModuleName, ['stepForward', 'start', 'stop', 'toggleStart']),
+        ...mapMutations({
+            addCell(commit, payload) {
+                commit(`${this.vuexNamespace}/addCell`, payload);
+            },
+        }),
 
-        addCell(argObj) {
-            this.$store.commit(`${this.vuexModuleName}/addCell`, argObj);
-        },
+        ...mapActions({
+            stepForward(dispatch) {
+                dispatch(`${this.vuexNamespace}/stepForward`);
+            },
 
-        stepForward() {
-            this.$store.dispatch(`${this.vuexModuleName}/stepForward`);
-        },
+            start(dispatch) {
+                dispatch(`${this.vuexNamespace}/start`);
+            },
 
-        start() {
-            this.$store.dispatch(`${this.vuexModuleName}/start`);
-        },
+            stop(dispatch) {
+                dispatch(`${this.vuexNamespace}/stop`);
+            },
 
-        stop() {
-            this.$store.dispatch(`${this.vuexModuleName}/stop`);
-        },
-
-        toggleStart() {
-            this.$store.dispatch(`${this.vuexModuleName}/toggleStart`);
-        },
+            toggleStart(dispatch) {
+                dispatch(`${this.vuexNamespace}/toggleStart`);
+            },
+        }),
 
         pixelStyle(pixel) {
             return this.pixelStyleFunction(pixel);

@@ -6,26 +6,24 @@
         <button @click="setContainer('BaseProbabilisticGoL')">BaseProbabilisticGoL</button>
         <button @click="setContainer('BasePredatorPrey')">BasePredatorPrey</button>
 
-        <ProbabilisticGoLContainer v-if="container === 'ProbabilisticGoL'"/>
-        <PredatorPreyContainer v-if="container === 'PredatorPrey'"/>
         <BaseContainer v-if="container === 'BaseGoL'"
-            vuexModuleName="classicGoL"
+            vuexNamespace="classicGoL"
             :pixelStyleFunction="classicPixelStyle"
             />
         <BaseContainer v-if="container === 'BaseTricolor'"
-            vuexModuleName="GoLTricolor"
+            vuexNamespace="GoLTricolor"
             :pixelStyleFunction="pixelStyleTricolor"
             />
         <BaseContainer v-if="container === 'BaseQuadLife'"
-            vuexModuleName="quadLife"
+            vuexNamespace="quadLife"
             :pixelStyleFunction="pixelStyleQuadLife"
             />
         <BaseContainer v-if="container === 'BaseProbabilisticGoL'"
-            vuexModuleName="probabilisticGoL"
+            vuexNamespace="probabilisticGoL"
             :pixelStyleFunction="pixelStyleQuadLife"
             />
         <BaseContainer v-if="container === 'BasePredatorPrey'"
-            vuexModuleName="predatorPrey"
+            vuexNamespace="predatorPrey"
             :pixelStyleFunction="pixelStyleQuadLife"
             />
     </div>
@@ -36,15 +34,10 @@ import { mapGetters, mapActions } from 'vuex';
 
 import BaseContainer from './BaseContainer.vue';
 
-import ProbabilisticGoLContainer from './ProbabilisticGoLContainer.vue';
-import PredatorPreyContainer from './PredatorPreyContainer.vue';
-
 import { classicPixelStyle, pixelStyleTricolor, pixelStyleQuadLife } from './PixelStyleFunctions/pixelStyleFunctions';
 
 export default {
     components: {
-        ProbabilisticGoLContainer,
-        PredatorPreyContainer,
         BaseContainer,
     },
 
