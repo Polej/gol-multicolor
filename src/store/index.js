@@ -7,6 +7,9 @@ import quadLife from './modules/quadLife';
 import probabilisticGoL from './modules/probabilisticGoL';
 import predatorPrey from './modules/predatorPrey';
 
+import baseGoLModule from './modules/BaseGoLModule';
+import { classicEvolve, classicRandomPixel, classicRandomPixels } from '../logic';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store(
@@ -17,6 +20,7 @@ export default new Vuex.Store(
             quadLife,
             probabilisticGoL,
             predatorPrey,
+            baseGoLModule: baseGoLModule(classicEvolve, classicRandomPixel, classicRandomPixels),
         },
 
         state: {

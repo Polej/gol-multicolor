@@ -1,30 +1,35 @@
 <template>
     <div>
-        <button @click="setContainer('BaseGoL')">BaseGoL</button>
-        <button @click="setContainer('BaseTricolor')">BaseTricolor</button>
-        <button @click="setContainer('BaseQuadLife')">BaseQuadLife</button>
-        <button @click="setContainer('BaseProbabilisticGoL')">BaseProbabilisticGoL</button>
-        <button @click="setContainer('BasePredatorPrey')">BasePredatorPrey</button>
+        <button @click="setContainer('GoL')">GoL</button>
+        <button @click="setContainer('Tricolor')">Tricolor</button>
+        <button @click="setContainer('QuadLife')">QuadLife</button>
+        <button @click="setContainer('ProbabilisticGoL')">ProbabilisticGoL</button>
+        <button @click="setContainer('PredatorPrey')">PredatorPrey</button>
+        <button @click="setContainer('baseGoLModule')">baseGoLModule</button>
 
-        <BaseContainer v-if="container === 'BaseGoL'"
+        <Container v-if="container === 'GoL'"
             vuexNamespace="classicGoL"
             :pixelStyleFunction="classicPixelStyle"
             />
-        <BaseContainer v-if="container === 'BaseTricolor'"
+        <Container v-if="container === 'Tricolor'"
             vuexNamespace="GoLTricolor"
             :pixelStyleFunction="pixelStyleTricolor"
             />
-        <BaseContainer v-if="container === 'BaseQuadLife'"
+        <Container v-if="container === 'QuadLife'"
             vuexNamespace="quadLife"
             :pixelStyleFunction="pixelStyleQuadLife"
             />
-        <BaseContainer v-if="container === 'BaseProbabilisticGoL'"
+        <Container v-if="container === 'ProbabilisticGoL'"
             vuexNamespace="probabilisticGoL"
             :pixelStyleFunction="pixelStyleQuadLife"
             />
-        <BaseContainer v-if="container === 'BasePredatorPrey'"
+        <Container v-if="container === 'PredatorPrey'"
             vuexNamespace="predatorPrey"
             :pixelStyleFunction="pixelStyleQuadLife"
+            />
+        <Container v-if="container === 'baseGoLModule'"
+            vuexNamespace="baseGoLModule"
+            :pixelStyleFunction="classicPixelStyle"
             />
     </div>
 </template>
@@ -32,13 +37,13 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
-import BaseContainer from './BaseContainer.vue';
+import Container from './Container.vue';
 
 import { classicPixelStyle, pixelStyleTricolor, pixelStyleQuadLife } from './PixelStyleFunctions/pixelStyleFunctions';
 
 export default {
     components: {
-        BaseContainer,
+        Container,
     },
 
     computed: {
