@@ -5,7 +5,7 @@ const state = (randomPixelsFunction) => ({
     lastJ: null,
 });
 
-const mutations = (evolveFunction, randomPixelFunction) => ({
+const mutations = (evolveFunction, generatePixel) => ({
     stepForward(s) {
         s.pixels = evolveFunction(s.pixels);
     },
@@ -17,7 +17,7 @@ const mutations = (evolveFunction, randomPixelFunction) => ({
     addCell(s, { i, j }) {
         if (i !== s.lastI || j !== s.lastJ) {
             if (s.pixels[i]) {
-                s.pixels[i].splice(j, 1, randomPixelFunction());
+                s.pixels[i].splice(j, 1, generatePixel(s));
             }
 
             s.lastI = i;
@@ -55,12 +55,12 @@ const actions = {
 
 export default (
     evolveFunction,
-    randomPixelFunction,
+    generatePixel,
     randomPixelsFunction,
 ) => ({
     namespaced: true,
 
     state: state(randomPixelsFunction),
-    mutations: mutations(evolveFunction, randomPixelFunction),
+    mutations: mutations(evolveFunction, generatePixel),
     actions,
 });

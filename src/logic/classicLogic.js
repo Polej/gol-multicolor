@@ -48,12 +48,13 @@ export function classicEvolve(pixels) {
     return newPixels;
 }
 
-export function classicRandomPixel() {
+/* eslint-disable-next-line no-unused-vars */
+export function classicGeneratePixel(state) {
     return Math.round(Math.random());
 }
 
 export function classicRandomPixels(width, height) {
     return makeArray(height, () => (
-        makeArray(width, () => classicRandomPixel())
+        makeArray(width, () => classicGeneratePixel())
     ));
 }

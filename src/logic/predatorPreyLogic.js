@@ -1,8 +1,8 @@
 import { vectorsToCheck, makeArray, makeValidatorForRange } from '../helpers';
 
-
-export function predatorPreyRandomPixel() {
-    return Math.floor(Math.random() * 3); // three is number of states:
+/* eslint-disable-next-line no-unused-vars */
+export function predatorPreyGeneratePixel(state) {
+    return Math.floor(Math.random() * 3); // there are three states:
     // 0 - empty 1 - predator 2 - prey
 }
 

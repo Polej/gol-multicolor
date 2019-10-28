@@ -3,36 +3,36 @@ import Vuex from 'vuex';
 
 import baseGoLModule from './modules/BaseGoLModule';
 
-import { classicEvolve, classicRandomPixel, classicRandomPixels } from '../logic/classicLogic';
-import { tricolorEvolve, tricolorRandomPixel, tricolorRandomPixels } from '../logic/tricolorLogic';
-import { quadLifeEvolve, quadLifeRandomPixel, quadLifeRandomPixels } from '../logic/quadLifeLogic';
-import { probabilisticEvolve, probabilisticRandomPixel, probabilisticRandomPixels } from '../logic/probabilisticLogic';
-import { predatorPreyEvolve, predatorPreyRandomPixel, predatorPreyEmptyPixels } from '../logic/predatorPreyLogic';
+import { classicEvolve, classicGeneratePixel, classicRandomPixels } from '../logic/classicLogic';
+import { tricolorEvolve, tricolorGeneratePixel, tricolorRandomPixels } from '../logic/tricolorLogic';
+import { quadLifeEvolve, quadLifeGeneratePixel, quadLifeRandomPixels } from '../logic/quadLifeLogic';
+import { probabilisticEvolve, probabilisticGeneratePixel, probabilisticRandomPixels } from '../logic/probabilisticLogic';
+import { predatorPreyEvolve, predatorPreyGeneratePixel, predatorPreyEmptyPixels } from '../logic/predatorPreyLogic';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store(
     {
         modules: {
-            GoLModule: baseGoLModule(classicEvolve, classicRandomPixel, classicRandomPixels),
+            GoLModule: baseGoLModule(classicEvolve, classicGeneratePixel, classicRandomPixels),
             TricolorModule: baseGoLModule(
                 tricolorEvolve,
-                tricolorRandomPixel,
+                tricolorGeneratePixel,
                 tricolorRandomPixels,
             ),
             QuadLifeModule: baseGoLModule(
                 quadLifeEvolve,
-                quadLifeRandomPixel,
+                quadLifeGeneratePixel,
                 quadLifeRandomPixels,
             ),
             ProbabilisticModule: baseGoLModule(
                 probabilisticEvolve,
-                probabilisticRandomPixel,
+                probabilisticGeneratePixel,
                 probabilisticRandomPixels,
             ),
             PredatorPreyModule: baseGoLModule(
                 predatorPreyEvolve,
-                predatorPreyRandomPixel,
+                predatorPreyGeneratePixel,
                 predatorPreyEmptyPixels,
             ),
         },

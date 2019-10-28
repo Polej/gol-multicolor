@@ -1,6 +1,7 @@
 import { vectorsToCheck, makeArray, makeValidatorForRange } from '../helpers';
 
-export function tricolorRandomPixel() {
+/* eslint-disable-next-line no-unused-vars */
+export function tricolorGeneratePixel(state) {
     return [
         Math.round(Math.random()),
         Math.round(Math.random()),
@@ -13,7 +14,7 @@ export function tricolorRandomPixel() {
  */
 export function tricolorRandomPixels(width, height) {
     return makeArray(height, () => (
-        makeArray(width, () => tricolorRandomPixel())
+        makeArray(width, () => tricolorGeneratePixel())
     ));
 }
 

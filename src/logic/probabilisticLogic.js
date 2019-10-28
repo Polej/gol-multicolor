@@ -38,7 +38,8 @@ function nonUniformFlooredRandom() {
 // }
 //
 
-export function probabilisticRandomPixel() {
+/* eslint-disable-next-line no-unused-vars */
+export function probabilisticGeneratePixel(state) {
     return nonUniformFlooredRandom();
 }
 
@@ -47,7 +48,7 @@ export function probabilisticRandomPixel() {
  */
 export function probabilisticRandomPixels(width, height) {
     return makeArray(height, () => (
-        makeArray(width, () => probabilisticRandomPixel())
+        makeArray(width, () => probabilisticGeneratePixel())
     ));
 }
 

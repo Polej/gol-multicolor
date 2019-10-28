@@ -35,7 +35,8 @@ function nonUniformFlooredRandom() {
     // when CHANCE_TO_GET_EMPTY_CELL = 4
 }
 
-export function quadLifeRandomPixel() {
+/* eslint-disable-next-line no-unused-vars */
+export function quadLifeGeneratePixel(state) {
     return nonUniformFlooredRandom();
 }
 
@@ -44,7 +45,7 @@ export function quadLifeRandomPixel() {
  */
 export function quadLifeRandomPixels(width, height) {
     return makeArray(height, () => (
-        makeArray(width, () => quadLifeRandomPixel())
+        makeArray(width, () => quadLifeGeneratePixel())
     ));
 }
 
