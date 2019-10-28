@@ -1,26 +1,40 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import classicGoL from './modules/classicGoL';
-import GoLTricolor from './modules/GoLTricolor';
-import quadLife from './modules/quadLife';
-import probabilisticGoL from './modules/probabilisticGoL';
-import predatorPrey from './modules/predatorPrey';
-
 import baseGoLModule from './modules/BaseGoLModule';
-import { classicEvolve, classicRandomPixel, classicRandomPixels } from '../logic';
+
+import { classicEvolve, classicRandomPixel, classicRandomPixels } from '../logic/classicLogic';
+import { tricolorEvolve, tricolorRandomPixel, tricolorRandomPixels } from '../logic/tricolorLogic';
+import { quadLifeEvolve, quadLifeRandomPixel, quadLifeRandomPixels } from '../logic/quadLifeLogic';
+import { probabilisticEvolve, probabilisticRandomPixel, probabilisticRandomPixels } from '../logic/probabilisticLogic';
+import { predatorPreyEvolve, predatorPreyRandomPixel, predatorPreyEmptyPixels } from '../logic/predatorPreyLogic';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store(
     {
         modules: {
-            classicGoL,
-            GoLTricolor,
-            quadLife,
-            probabilisticGoL,
-            predatorPrey,
-            baseGoLModule: baseGoLModule(classicEvolve, classicRandomPixel, classicRandomPixels),
+            GoLModule: baseGoLModule(classicEvolve, classicRandomPixel, classicRandomPixels),
+            TricolorModule: baseGoLModule(
+                tricolorEvolve,
+                tricolorRandomPixel,
+                tricolorRandomPixels,
+            ),
+            QuadLifeModule: baseGoLModule(
+                quadLifeEvolve,
+                quadLifeRandomPixel,
+                quadLifeRandomPixels,
+            ),
+            ProbabilisticModule: baseGoLModule(
+                probabilisticEvolve,
+                probabilisticRandomPixel,
+                probabilisticRandomPixels,
+            ),
+            PredatorPreyModule: baseGoLModule(
+                predatorPreyEvolve,
+                predatorPreyRandomPixel,
+                predatorPreyEmptyPixels,
+            ),
         },
 
         state: {

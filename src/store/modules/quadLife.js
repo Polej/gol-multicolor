@@ -1,4 +1,4 @@
-import makeValidatorForRange from '../../helpers';
+import { makeValidatorForRange } from '../../helpers';
 
 const vectorsToCheck = [[-1, -1], [-1, 0], [-1, 1],
     [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];

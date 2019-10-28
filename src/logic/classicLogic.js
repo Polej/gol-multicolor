@@ -1,7 +1,4 @@
-import makeValidatorForRange from './helpers';
-
-const vectorsToCheck = [[-1, -1], [-1, 0], [-1, 1],
-    [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
+import { vectorsToCheck, makeArray, makeValidatorForRange } from '../helpers';
 
 function classicTurnOnOrOff(i, j, oldPixels, height, width) {
     let aliveNeighbours = 0;
@@ -49,10 +46,6 @@ export function classicEvolve(pixels) {
     );
 
     return newPixels;
-}
-
-function makeArray(len, gen) {
-    return Array.from(new Array(len), gen);
 }
 
 export function classicRandomPixel() {

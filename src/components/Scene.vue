@@ -3,33 +3,28 @@
         <button @click="setContainer('GoL')">GoL</button>
         <button @click="setContainer('Tricolor')">Tricolor</button>
         <button @click="setContainer('QuadLife')">QuadLife</button>
-        <button @click="setContainer('ProbabilisticGoL')">ProbabilisticGoL</button>
+        <button @click="setContainer('Probabilistic')">ProbabilisticGoL</button>
         <button @click="setContainer('PredatorPrey')">PredatorPrey</button>
-        <button @click="setContainer('baseGoLModule')">baseGoLModule</button>
 
         <Container v-if="container === 'GoL'"
-            vuexNamespace="classicGoL"
+            vuexNamespace="GoLModule"
             :pixelStyleFunction="classicPixelStyle"
             />
         <Container v-if="container === 'Tricolor'"
-            vuexNamespace="GoLTricolor"
+            vuexNamespace="TricolorModule"
             :pixelStyleFunction="pixelStyleTricolor"
             />
         <Container v-if="container === 'QuadLife'"
-            vuexNamespace="quadLife"
+            vuexNamespace="QuadLifeModule"
             :pixelStyleFunction="pixelStyleQuadLife"
             />
-        <Container v-if="container === 'ProbabilisticGoL'"
-            vuexNamespace="probabilisticGoL"
+        <Container v-if="container === 'Probabilistic'"
+            vuexNamespace="ProbabilisticModule"
             :pixelStyleFunction="pixelStyleQuadLife"
             />
         <Container v-if="container === 'PredatorPrey'"
-            vuexNamespace="predatorPrey"
+            vuexNamespace="PredatorPreyModule"
             :pixelStyleFunction="pixelStyleQuadLife"
-            />
-        <Container v-if="container === 'baseGoLModule'"
-            vuexNamespace="baseGoLModule"
-            :pixelStyleFunction="classicPixelStyle"
             />
     </div>
 </template>
