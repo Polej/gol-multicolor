@@ -145,3 +145,22 @@ export function quadLifeEvolve(pixels) {
 
     return newPixels;
 }
+
+const color = {
+    0: 'rgb(255, 255, 255)',
+    1: 'rgb(255, 0, 0)',
+    2: 'rgb(0, 255, 0)',
+    3: 'rgb(0, 0, 255)',
+    4: 'rgb(255, 255, 0)',
+};
+
+export function quadLifePixelStyle(number) {
+    return `background-color: ${color[number]}`;
+}
+
+export default {
+    evolve: quadLifeEvolve,
+    generatePixel: quadLifeGeneratePixel,
+    startPixels: quadLifeRandomPixels,
+    pixelStyle: quadLifePixelStyle,
+};

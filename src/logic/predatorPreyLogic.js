@@ -1,9 +1,12 @@
 import { vectorsToCheck, makeArray, makeValidatorForRange } from '../helpers';
 
+const CELL_EMPTY = 0;
+const CELL_PREDATOR = 1;
+const CELL_PREY = 2;
+
 /* eslint-disable-next-line no-unused-vars */
 export function predatorPreyGeneratePixel(state) {
-    return Math.floor(Math.random() * 3); // there are three states:
-    // 0 - empty 1 - predator 2 - prey
+    return Math.floor(Math.random() * 3); // there are three states
 }
 
 /**
@@ -24,35 +27,35 @@ export function predatorPreyEmptyPixels(width, height) {
  */
 function predatorPreyRule(neighboursByType, oldPixels, i, j) {
     const centralPoint = oldPixels[i][j];
-    /* eslint-disable-next-line no-unused-vars */
-    const [numberOfEmptyCells, ...rest] = neighboursByType;
+
+    const [, ...rest] = neighboursByType;
     const totalNumberOfAlive = rest.reduce((a, b) => a + b, 0);
 
-    // 2 = green prey, 1 = red predator
     // when central point is empty, and there are 3 neighbours,
     // and there is one or two predators in neighbourhood,
     // give birth to predator
-    if (centralPoint === 0 && (totalNumberOfAlive === 3) && (neighboursByType[2] > 0)
-        && neighboursByType[1] > 0) {
-        return 1; // predator
+    if (centralPoint === 0 && (totalNumberOfAlive === 3) && (neighboursByType[CELL_PREY] > 0)
+        && neighboursByType[CELL_PREDATOR] > 0) {
+        return CELL_PREDATOR; // predator
     }
     // when central point is empty, there are 2 neighbours,
     // and there are no predators, give birth to new prey
-    if (centralPoint === 0 && (totalNumberOfAlive === 1)
-        && neighboursByType[1] === 0) {
-        return 2; // prey
+    if (centralPoint === CELL_EMPTY && (totalNumberOfAlive === 1)
+        && neighboursByType[CELL_PREDATOR] === 0) {
+        return CELL_PREY; // prey
     }
 
     // when central point is prey, stay if no predator present
-    if (centralPoint === 2 && neighboursByType[1] === 0) {
+    if (centralPoint === CELL_PREY && neighboursByType[CELL_PREDATOR] === 0) {
         return centralPoint;
     }
     // when central point is predator, stay if number of prey is nonzero
-    if (centralPoint === 1 && neighboursByType[2] > 0 && neighboursByType[1] < 4) {
+    if (centralPoint === CELL_PREDATOR
+            && neighboursByType[CELL_PREY] > 0 && neighboursByType[CELL_PREDATOR] < 4) {
         return centralPoint;
     }
 
-    return 0;
+    return CELL_EMPTY;
 }
 
 /**
@@ -110,3 +113,22 @@ export function predatorPreyEvolve(pixels) {
 
     return newPixels;
 }
+
+const color = {
+    0: 'rgb(255, 255, 255)',
+    1: 'rgb(255, 0, 0)',
+    2: 'rgb(0, 255, 0)',
+    3: 'rgb(0, 0, 255)',
+    4: 'rgb(255, 255, 0)',
+};
+
+export function predatorPreyPixelStyle(number) {
+    return `background-color: ${color[number]}`;
+}
+
+export default {
+    evolve: predatorPreyEvolve,
+    generatePixel: predatorPreyGeneratePixel,
+    startPixels: predatorPreyEmptyPixels,
+    pixelStyle: predatorPreyPixelStyle,
+};

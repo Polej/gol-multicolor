@@ -90,3 +90,14 @@ export function tricolorEvolve(pixels) {
 
     return newPixels;
 }
+
+export function tricolorPixelStyle(bits) {
+    return `background-color: rgb(${255 * (bits[0])},${255 * (bits[1])},${255 * (bits[2])})`;
+}
+
+export default {
+    evolve: tricolorEvolve,
+    generatePixel: tricolorGeneratePixel,
+    startPixels: tricolorRandomPixels,
+    pixelStyle: tricolorPixelStyle,
+};

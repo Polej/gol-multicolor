@@ -8,23 +8,18 @@
 
         <Container v-if="container === 'GoL'"
             vuexNamespace="GoLModule"
-            :pixelStyleFunction="classicPixelStyle"
             />
         <Container v-if="container === 'Tricolor'"
             vuexNamespace="TricolorModule"
-            :pixelStyleFunction="pixelStyleTricolor"
             />
         <Container v-if="container === 'QuadLife'"
             vuexNamespace="QuadLifeModule"
-            :pixelStyleFunction="pixelStyleQuadLife"
             />
         <Container v-if="container === 'Probabilistic'"
             vuexNamespace="ProbabilisticModule"
-            :pixelStyleFunction="pixelStyleQuadLife"
             />
         <Container v-if="container === 'PredatorPrey'"
             vuexNamespace="PredatorPreyModule"
-            :pixelStyleFunction="pixelStyleQuadLife"
             />
     </div>
 </template>
@@ -33,8 +28,6 @@
 import { mapGetters, mapActions } from 'vuex';
 
 import Container from './Container.vue';
-
-import { classicPixelStyle, pixelStyleTricolor, pixelStyleQuadLife } from './PixelStyleFunctions/pixelStyleFunctions';
 
 export default {
     components: {
@@ -47,10 +40,6 @@ export default {
 
     methods: {
         ...mapActions(['setContainer']),
-
-        classicPixelStyle,
-        pixelStyleTricolor,
-        pixelStyleQuadLife,
     },
 };
 </script>

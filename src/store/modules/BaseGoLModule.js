@@ -1,8 +1,12 @@
-const state = (randomPixelsFunction) => ({
-    pixels: randomPixelsFunction(100, 100),
+const state = (startPixels) => ({
+    pixels: startPixels(100, 100),
     interval: null,
     lastI: null,
     lastJ: null,
+});
+
+const getters = (pixelStyleFunction) => ({
+    pixelStyle: () => (pixel) => pixelStyleFunction(pixel),
 });
 
 const mutations = (evolveFunction, generatePixel) => ({
@@ -53,14 +57,16 @@ const actions = {
     },
 };
 
-export default (
-    evolveFunction,
+export default ({
+    evolve,
     generatePixel,
-    randomPixelsFunction,
-) => ({
+    startPixels,
+    pixelStyle,
+}) => ({
     namespaced: true,
 
-    state: state(randomPixelsFunction),
-    mutations: mutations(evolveFunction, generatePixel),
+    state: state(startPixels),
+    getters: getters(pixelStyle),
+    mutations: mutations(evolve, generatePixel),
     actions,
 });

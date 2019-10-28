@@ -58,3 +58,14 @@ export function classicRandomPixels(width, height) {
         makeArray(width, () => classicGeneratePixel())
     ));
 }
+
+export function classicPixelStyle(bit) {
+    return `background-color: rgb(${255 * (1 - bit)},${255 * (1 - bit)},${255 * (1 - bit)})`;
+}
+
+export default {
+    evolve: classicEvolve,
+    generatePixel: classicGeneratePixel,
+    startPixels: classicRandomPixels,
+    pixelStyle: classicPixelStyle,
+};

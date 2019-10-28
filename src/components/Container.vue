@@ -25,25 +25,33 @@ tr
 </style>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
+import {
+    mapState,
+    mapActions,
+    mapMutations,
+} from 'vuex';
 
 const CELL_SIZE = 6;
 
 export default {
     props: {
         vuexNamespace: String,
-        pixelStyleFunction: Function,
     },
 
     mounted() {
         this.start();
     },
 
-    computed: mapState({
-        pixels(state) {
-            return state[this.vuexNamespace].pixels;
+    computed: {
+        ...mapState({
+            pixels(state) {
+                return state[this.vuexNamespace].pixels;
+            },
+        }),
+        pixelStyle() {
+            return this.$store.getters[`${this.vuexNamespace}/pixelStyle`];
         },
-    }),
+    },
 
     methods: {
         ...mapMutations({
@@ -69,10 +77,6 @@ export default {
                 dispatch(`${this.vuexNamespace}/toggleStart`);
             },
         }),
-
-        pixelStyle(pixel) {
-            return this.pixelStyleFunction(pixel);
-        },
 
         onDragged({
             el,
