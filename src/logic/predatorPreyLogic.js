@@ -34,7 +34,8 @@ function predatorPreyRule(neighboursByType, oldPixels, i, j) {
     // when central point is empty, and there are 3 neighbours,
     // and there is one or two predators in neighbourhood,
     // give birth to predator
-    if (centralPoint === 0 && (totalNumberOfAlive === 3) && (neighboursByType[CELL_PREY] > 0)
+    if (centralPoint === CELL_EMPTY && (totalNumberOfAlive === 3)
+        && (neighboursByType[CELL_PREY] > 0)
         && neighboursByType[CELL_PREDATOR] > 0) {
         return CELL_PREDATOR; // predator
     }

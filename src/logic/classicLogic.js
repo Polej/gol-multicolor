@@ -23,10 +23,10 @@ function classicTurnOnOrOff(i, j, oldPixels, height, width) {
             0,
         );
 
-    if (aliveNeighbours === 3) {
+    if (aliveNeighbours === 3 && oldPixels[i][j] === 0) {
         return 1;
     }
-    if (aliveNeighbours === 2 && oldPixels[i][j] === 1) {
+    if ((aliveNeighbours === 2 || aliveNeighbours === 3) && oldPixels[i][j] === 1) {
         return 1;
     }
 

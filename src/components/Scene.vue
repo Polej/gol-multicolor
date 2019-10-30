@@ -21,6 +21,8 @@
         <Container v-if="container === 'PredatorPrey'"
             vuexNamespace="PredatorPreyModule"
             />
+
+        <RuleEditorClassic/>
     </div>
 </template>
 
@@ -28,10 +30,12 @@
 import { mapGetters, mapActions } from 'vuex';
 
 import Container from './Container.vue';
+import RuleEditorClassic from './RuleEditorClassic.vue';
 
 export default {
     components: {
         Container,
+        RuleEditorClassic,
     },
 
     computed: {

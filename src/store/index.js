@@ -3,6 +3,8 @@ import Vuex from 'vuex';
 
 import baseGoLModule from './modules/BaseGoLModule';
 
+import EditorModule from './modules/EditorModule';
+
 import classicImplementation from '../logic/classicLogic';
 import tricolorImplementation from '../logic/tricolorLogic';
 import quadLifeImplementation from '../logic/quadLifeLogic';
@@ -19,6 +21,8 @@ export default new Vuex.Store(
             QuadLifeModule: baseGoLModule(quadLifeImplementation),
             ProbabilisticModule: baseGoLModule(probabilisticImplementation),
             PredatorPreyModule: baseGoLModule(predatorPreyImplementation),
+
+            EditorModule,
         },
 
         state: {
