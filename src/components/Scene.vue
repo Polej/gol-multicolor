@@ -1,30 +1,37 @@
 <template>
     <div>
-        <button @click="setContainer('ClassicGoL')">Classic GoL</button>
+        <button @click="setContainer('GoL')">GoL</button>
         <button @click="setContainer('Tricolor')">Tricolor</button>
         <button @click="setContainer('QuadLife')">QuadLife</button>
-        <button @click="setContainer('ProbabilisticGoL')">ProbabilisticGoL</button>
-        <GolContainer v-if="container === 'ClassicGoL'"/>
-        <TricolorContainer v-if="container === 'Tricolor'"/>
-        <QuadLifeContainer v-if="container === 'QuadLife'"/>
-        <ProbabilisticGoLContainer v-if="container === 'ProbabilisticGoL'"/>
+        <button @click="setContainer('Probabilistic')">ProbabilisticGoL</button>
+        <button @click="setContainer('PredatorPrey')">PredatorPrey</button>
+
+        <Container v-if="container === 'GoL'"
+            vuexNamespace="GoLModule"
+            />
+        <Container v-if="container === 'Tricolor'"
+            vuexNamespace="TricolorModule"
+            />
+        <Container v-if="container === 'QuadLife'"
+            vuexNamespace="QuadLifeModule"
+            />
+        <Container v-if="container === 'Probabilistic'"
+            vuexNamespace="ProbabilisticModule"
+            />
+        <Container v-if="container === 'PredatorPrey'"
+            vuexNamespace="PredatorPreyModule"
+            />
     </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
-import GolContainer from './GolContainer.vue';
-import TricolorContainer from './TricolorContainer.vue';
-import QuadLifeContainer from './QuadLifeContainer.vue';
-import ProbabilisticGoLContainer from './ProbabilisticGoL.vue';
+import Container from './Container.vue';
 
 export default {
     components: {
-        GolContainer,
-        TricolorContainer,
-        QuadLifeContainer,
-        ProbabilisticGoLContainer,
+        Container,
     },
 
     computed: {

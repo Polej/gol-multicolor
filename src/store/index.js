@@ -1,20 +1,24 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import classicGoL from './modules/classicGoL';
-import GoLTricolor from './modules/GoLTricolor';
-import quadLife from './modules/quadLife';
-import probabilisticGoL from './modules/probabilisticGoL';
+import baseGoLModule from './modules/BaseGoLModule';
+
+import classicImplementation from '../logic/classicLogic';
+import tricolorImplementation from '../logic/tricolorLogic';
+import quadLifeImplementation from '../logic/quadLifeLogic';
+import probabilisticImplementation from '../logic/probabilisticLogic';
+import predatorPreyImplementation from '../logic/predatorPreyLogic';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store(
     {
         modules: {
-            classicGoL,
-            GoLTricolor,
-            quadLife,
-            probabilisticGoL,
+            GoLModule: baseGoLModule(classicImplementation),
+            TricolorModule: baseGoLModule(tricolorImplementation),
+            QuadLifeModule: baseGoLModule(quadLifeImplementation),
+            ProbabilisticModule: baseGoLModule(probabilisticImplementation),
+            PredatorPreyModule: baseGoLModule(predatorPreyImplementation),
         },
 
         state: {

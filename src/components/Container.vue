@@ -1,11 +1,11 @@
 <template>
     <div>
-        TricolorContainer
+        GolContainer
         <button @click="toggleStart">Pause</button>
         <table cellspacing="0" cellpadding="0" v-dragged="onDragged">
             <tr v-for="(row, i) in pixels" :key="i">
                 <td v-for="(pixel, j) in row"
-                    :key="j" :style="pixelStyleTricolor(pixel)"
+                    :key="j" :style="pixelStyle(pixel)"
                     @click="addCell(i,j)"></td>
             </tr>
         </table>
@@ -25,28 +25,58 @@ tr
 </style>
 
 <script>
-import { createNamespacedHelpers } from 'vuex';
-
-const { mapState, mapActions, mapMutations } = createNamespacedHelpers('GoLTricolor');
+import {
+    mapState,
+    mapActions,
+    mapMutations,
+} from 'vuex';
 
 const CELL_SIZE = 6;
 
 export default {
+    props: {
+        vuexNamespace: String,
+    },
+
     mounted() {
         this.start();
     },
 
     computed: {
-        ...mapState(['pixels']),
+        ...mapState({
+            pixels(state) {
+                return state[this.vuexNamespace].pixels;
+            },
+        }),
+        pixelStyle() {
+            return this.$store.getters[`${this.vuexNamespace}/pixelStyle`];
+        },
     },
 
     methods: {
-        ...mapMutations(['addCell']),
-        ...mapActions(['stepForward', 'start', 'stop', 'toggleStart']),
+        ...mapMutations({
+            addCell(commit, payload) {
+                commit(`${this.vuexNamespace}/addCell`, payload);
+            },
+        }),
 
-        pixelStyleTricolor(bits) {
-            return `background-color: rgb(${255 * (bits[0])},${255 * (bits[1])},${255 * (bits[2])})`;
-        },
+        ...mapActions({
+            stepForward(dispatch) {
+                dispatch(`${this.vuexNamespace}/stepForward`);
+            },
+
+            start(dispatch) {
+                dispatch(`${this.vuexNamespace}/start`);
+            },
+
+            stop(dispatch) {
+                dispatch(`${this.vuexNamespace}/stop`);
+            },
+
+            toggleStart(dispatch) {
+                dispatch(`${this.vuexNamespace}/toggleStart`);
+            },
+        }),
 
         onDragged({
             el,
